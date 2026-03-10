@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <stdlib.h>
+int findMax(long long N,long long* length){
+    int max=length[0];
+    for(int i=1;i<N;i++){
+        max=(length[i]>max)?length[i]:max;
+    } 
+    return max;
+}
+
+
+long long f(long long N,long long* length,long long speed_l){
+    long long ans=0;
+    for(int i=0;i<N;i++){
+        ans+=length[i]/speed_l; 
+    }
+    return ans;
+}
+
+int main() {
+    long long N;
+    long long K;
+    scanf("%lld %lld",&N,&K);
+    long long* length = (long long*)malloc(N * sizeof(long long));
+    long long total=0;
+    for(int i=0;i<N;i++){
+        scanf("%lld",&length[i]);
+        total+=length[i];
+    }
+    if (K > total) {
+        printf("0\n");
+        free(length);
+        return 0;
+    }
+    long long l=1;
+    long long r=0;
+    r=findMax(N,length);
+    //判断最小且达标的速度可能范围[l,r]
+    long long ans=r;
+    while(l<=r){
+        int m=l+(r-l)/2;// 防止溢出的二分中点写法
+        if(f(N,length,m)>=K){
+            ans=m;//达标
+            l=m+1;
+        }
+        else{
+            r=m-1;
+        }
+    }
+    printf("%lld",ans);
+    free(length);
+    return 0;
+}
