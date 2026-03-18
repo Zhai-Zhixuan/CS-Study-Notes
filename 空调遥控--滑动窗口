@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <stdlib.h>
+int compare(const void *a, const void *b) {
+    return (*(int*)a - *(int*)b);  //比较函数-升序
+}
+int main() {
+    long long n,p;
+    scanf("%lld %lld",&n,&p);
+    long long a[n];
+    long long max=0;
+    for (long long  i=0;i<n;i++){
+        scanf("%lld",&a[i]);
+    }
+    qsort(a, n, sizeof(long long), compare);
+    for (long long l=0,r=0;r<n;r++){
+        while(a[r]-a[l]>2*p){
+            l++;
+        }
+        if(r-l+1>max){
+            max=r-l+1;
+        }
+    }
+    printf("%lld",max);
+    return 0;
+}
