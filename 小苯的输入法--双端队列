@@ -1,0 +1,74 @@
+//输入框里一开始是一个空字符串，并且当前的输入端在右侧。
+//给出一个长度为 𝑛的操作串 𝑠，其中每个字符都是下面三类之一：
+//∙如果是小写英文字母，那么就在当前输入端插入这个字母。
+//∙如果是'!'，那么切换当前输入端。如果原来在左侧，就切换到右侧；如果原来在右侧，就切换到左侧。
+//∙如果是'-'，那么删除当前输入端的一个字符。如果当前字符串为空，那么这次操作不产生任何效果。
+//你的任务就是求出所有操作结束后，输入框中的最终字符串，或报告最终串为空
+#include<stdio.h>
+int main(){
+    int T;
+    scanf("%d",&T);
+    while(T--){
+        int n;
+        char s[200005];
+        scanf("%d",&n);
+        scanf("%s",s);
+        char a[200005];
+        int l=0,r=0;
+        int left_w=0;
+        int size=0;
+        int limit=200005;
+        for(int i=0;i<n;i++){
+            if(s[i]>='a'&&s[i]<='z'){
+                if(left_w){
+                    if(size==0){
+                        l=r=0;
+                        a[0]=s[i];
+                    }
+                    else{
+                        l=(l==0)?(limit-1):(l-1);
+                        a[l]=s[i];
+                    }
+                    size++;
+                }
+                else{
+                   if(size==0){
+                        l=r=0;
+                        a[0]=s[i];
+                    }
+                    else{
+                        r=(r==limit-1)?0:(r+1);
+                        a[r]=s[i];
+                    }
+                    size++;
+            }
+            }
+           else if(s[i]=='!'){
+               left_w=!left_w;
+            }
+           else if(s[i]=='-'){
+               if(size>0){
+                 if(left_w){
+                     l=(l==limit-1)?0:(l+1);
+                     size--;
+                }
+                else{
+                    r=(r==0)?limit-1:(r-1);
+                    size--;
+                }
+             }
+           }
+        }
+        if(size==0){
+            printf("Empty\n");
+        }else{
+            int index=l;
+            for(int i = 0; i < size; i++) {
+                printf("%c", a[index]);
+                index = (index == limit - 1) ? 0 : (index + 1);
+        }
+            printf("\n");
+        }
+        }
+    return 0;
+}
