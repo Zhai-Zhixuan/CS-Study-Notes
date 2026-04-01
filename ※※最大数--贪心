@@ -1,0 +1,48 @@
+int cmp(const void*a,const void*b){
+    char *str_a=*(char **)a;
+    char *str_b=*(char **)b;
+    int strlen_a=strlen(str_a);
+    int strlen_b=strlen(str_b);
+    char *concat1=(char *)malloc(strlen_a+strlen_b+1);
+    char *concat2=(char *)malloc(strlen_a+strlen_b+1);
+    strcpy(concat1,str_a);
+    strcat(concat1,str_b);
+    strcpy(concat2,str_b);
+    strcat(concat2,str_a);
+    int result=strcmp(concat2,concat1);
+    free(concat1);
+    free(concat2);
+    return result;
+}
+
+char* largestNumber(int* nums, int numsSize) {
+    char **strs=(char **)malloc(numsSize*sizeof(char*));
+    for(int i=0;i<numsSize;i++){
+        strs[i]=(char *)malloc(12*sizeof(char));
+        sprintf(strs[i],"%d",nums[i]);
+    }
+    qsort(strs,numsSize,sizeof(char *),cmp);
+    if(strcmp(strs[0],"0")==0){
+        for(int i=0;i<numsSize;i++){
+            free(strs[i]);
+        }
+        free(strs);
+        char *result =(char *)malloc(2*sizeof(char));
+        strcpy(result,"0");
+        return result;
+    }
+    int total_len=0;
+    for(int i=0;i<numsSize;i++){
+        total_len+=strlen(strs[i]);
+    }
+    char *result=(char *)malloc((total_len+1)*sizeof(char));
+    result[0]='\0';
+    for(int i=0;i<numsSize;i++){
+        strcat(result,strs[i]);
+    }
+    for(int i=0;i<numsSize;i++){
+        free(strs[i]);
+    }
+    free(strs);
+    return result;
+}
