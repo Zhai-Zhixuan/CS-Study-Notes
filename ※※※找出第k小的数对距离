@@ -1,0 +1,35 @@
+//数对 (a,b) 由整数 a 和 b 组成，其数对距离定义为 a 和 b 的绝对差值。
+//给你一个整数数组 nums 和一个整数 k ，数对由 nums[i] 和 nums[j] 组成且满足 0 <= i < j < nums.length。
+//返回 所有数对距离中 第 k 小的数对距离。
+int cmp(const void* a,const void* b){
+    return *(int *)a-*(int *)b;
+}
+
+int f(int* arr,int len,int limit){
+    int ans=0;
+    for(int l=0,r=0;l<len;l++){
+        while(r+1<len && arr[r+1]-arr[l]<=limit){
+            r++;
+        }
+        ans+=r-l;
+    }
+    return ans;
+}
+
+int smallestDistancePair(int* nums, int numsSize, int k) {
+    qsort(nums,numsSize,sizeof(int),cmp);
+    int ans=0;
+    // [0,最大-最小]，不停二分
+    for(int l=0,r=nums[numsSize-1]-nums[0],m;l<=r;){
+        m=l+(r-l)/2;
+        int cnt=f(nums,numsSize,m);
+        if(cnt>=k){
+            ans=m;
+            r=m-1;
+        }
+        else{
+            l=m+1;
+        }
+    }
+    return ans;
+}
