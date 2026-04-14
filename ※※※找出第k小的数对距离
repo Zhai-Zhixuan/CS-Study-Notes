@@ -7,9 +7,9 @@ int cmp(const void* a,const void* b){
 
 int f(int* arr,int len,int limit){
     int ans=0;
-    for(int l=0,r=0;l<len;l++){
+    for(int l=0,r=0;l<len;l++){ //滑动窗口
         while(r+1<len && arr[r+1]-arr[l]<=limit){
-            r++;
+            r++; //满足条件缩小窗口
         }
         ans+=r-l;
     }
