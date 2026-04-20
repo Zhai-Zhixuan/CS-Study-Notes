@@ -1,0 +1,19 @@
+//排序比较
+//最大的比中间大，第二大比最小大就可以赢
+#include <stdio.h>
+#include <stdlib.h>
+int cmp(const void* a,const void* b){
+    return *(int *)a-*(int *)b;
+}
+int main() {
+    int v[3],a[3];
+    scanf("%d %d %d",&v[0],&v[1],&v[2]);
+    scanf("%d %d %d",&a[0],&a[1],&a[2]);
+    qsort(v,3,sizeof(int),cmp);
+    qsort(a,3,sizeof(int),cmp);
+    if(a[2]>v[1]&&a[1]>v[0]){
+        printf("Yes");
+    }
+    else printf("No");
+    return 0;
+}
