@@ -1,0 +1,28 @@
+#include <stdio.h>
+
+int main() {
+    int n;
+    scanf("%d",&n);
+    char s[100005];
+    scanf("%s",s);
+    int max=0;
+    for(int l=0;l<n;l++){
+        if(s[l]!='a' && s[l] != 'h') {
+            continue;
+        }
+        int len=0;
+        int r=l;
+        while(r+1<n&&((s[r]=='a'&&s[r+1]=='h')||(s[r]=='h'&&s[r+1]=='a'))){
+            r++;
+        }
+        len=r-l+1;
+        if(s[l]!='a'&&s[l]!='h') len=0;
+        if(len>max){
+            max=len;
+        }
+        l=r; //key!!!
+        //跳跃优化，越过连续块
+    }
+    printf("%d",max);
+    return 0;
+}
