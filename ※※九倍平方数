@@ -1,0 +1,43 @@
+//一个数能被 9 整除 ⇔ 各位数字之和能被 9 整除
+#include <stdio.h>
+#include <string.h>
+int main() {
+    int t;
+    scanf("%d",&t);
+    getchar();
+    while(t--){
+        char n[200005];
+        fgets(n, 200005, stdin);
+        n[strcspn(n, "\n")] = 0; //去掉换行符
+        int len=strlen(n);
+        int num=0,count_3=0,count_2=0;
+    
+        for(int i=0;i<len;i++){
+            if(n[i]=='3'){ //统计2和3的个数
+                count_3++;
+            }
+            else if(n[i]=='2'){
+                count_2++;
+            }
+            num+=n[i]-'0'; //计算所有数字之和
+        }
+        int min_2=count_2<8?count_2:8; //2a mod 9周期为8
+        int min_3=count_3<2?count_3:2; //3b mod 9周期为3
+        int found=0;
+        for(int i=0;i<=min_2;i++){
+            for(int j=0;j<=min_3;j++){
+                int a=num+i*2+j*6; //2变4加2，3变9加6
+                if(a%9==0){
+                    printf("YES\n");
+                    found=1;
+                    break;
+                }
+            }
+            if(found) break;
+        }
+        if(!found){
+            printf("NO\n");
+        }
+    }
+    return 0;
+}
