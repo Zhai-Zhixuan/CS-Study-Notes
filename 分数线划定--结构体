@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct Candidate{
+    int id;
+    int score;
+};
+
+int cmp(const void* a,const void* b){
+    struct Candidate* ca=(struct Candidate*)a; //强制类型转换
+    struct Candidate* cb=(struct Candidate*)b;
+    if(ca->score!=cb->score){
+        return cb->score - ca->score;  //分数降序
+        //ca.score  访问结构体变量的成员，ca 是结构体本身（不是指针）
+        //ca->score 访问结构体指针指向的成员，ca 是指向结构体的指针
+    }
+    else return ca->id - cb->id; //报名号升序
+}
+int main() {
+    int n,m;
+    scanf("%d%d",&n,&m);
+    struct Candidate candidates[5005];
+    //创建一个数组，名字叫 candidates，这个数组可以存储5005个struct Candidate 类型的元素
+    for(int i=0;i<n;i++){
+        scanf("%d%d",&candidates[i].id,&candidates[i].score);
+    }
+    qsort(candidates,n,sizeof(struct Candidate),cmp);
+    int t=(int)m*1.5;
+    int line_score=candidates[t-1].score;
+    int cnt=0;
+    for(int i=0;i<n;i++){
+        if(candidates[i].score>=line_score){
+            cnt++;
+        }
+    }
+    printf("%d %d\n",line_score,cnt);
+    for(int i=0;i<cnt;i++){
+        printf("%d %d\n",candidates[i].id,candidates[i].score);
+    }
+    return 0;
+}
