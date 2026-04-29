@@ -1,0 +1,26 @@
+//定义一个整数 𝑥，如果 𝑥是一个回文数，且 𝑥2也是一个回文数，则称 𝑥2为一个双回文数。
+//给定数字 𝑛判断 𝑛是不是一个双回文数。
+//整数反转判断回文 + 检查平方根是否为整数
+//n 是回文数，并且 sqrt(n) 是整数 且 sqrt(n) 是回文数。
+#include <stdio.h>
+#include <math.h>
+int is_p(long long x){
+    long long reversed=0;
+    long long origional=x;
+    while(x>0){
+        reversed=reversed*10+x%10;
+        x/=10;
+    }
+    return reversed==origional;
+}
+int main(){
+    long long n;
+    scanf("%lld",&n);
+    long long s=sqrt(n);
+    //printf("%lld ",is_p(n));
+    if(s*s==n&&is_p(n)&&is_p(s)){
+        printf("YES\n");
+    }
+    else printf("NO\n");
+    return 0;
+}
