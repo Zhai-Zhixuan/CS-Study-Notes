@@ -1,0 +1,70 @@
+//找出字符串中所有独特的子串，且每个子串中所有数字出现的频率相同。
+//最大词频->maxcnt=0
+//拥有最大词频的字符数->maxcntkinds=0
+//总字符数->allkinds=0
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
+#define BASE 499
+#define MAXN 100005
+typedef struct HashSet{
+    unsigned long long* data;
+    int size;
+    int capacity;
+}HashSet;
+HashSet* createHashSet(int capacity){
+    HashSet* set=(HashSet*)malloc(sizeof(HashSet));
+    set->data=(unsigned long long*)malloc(sizeof(unsigned long long) * capacity);
+    set->size=0;
+    set->capacity=capacity;
+    return set;
+}
+int addToSet(HashSet* set,unsigned long long val){
+    for(int i=0;i<set->size;i++){ //去重
+        if(set->data[i]==val){
+            return 0;
+        }
+    }
+    if(set->size >= set->capacity){
+        set->capacity*=2;
+        set->data=(unsigned long long*)realloc(set->data,sizeof(unsigned long long) * set->capacity);
+    }
+    set->data[set->size++]=val;
+    return 1;
+}
+void freeHashSet(HashSet* set){
+    free(set->data);
+    free(set);
+}
+int equalDigitFrequency(const char* str){
+    int n=strlen(str);
+    HashSet* set=createHashSet(MAXN);
+    for(int i=0;i<n;i++){
+        int cnt[10]={0};
+        memset(cnt,0,sizeof(cnt));
+        unsigned long long hashCode=0;
+        int curVal=0,maxCnt=0,maxCntKinds=0,allKinds=0;
+        for (int j = i; j < n; j++) {
+			curVal = str[j] - '0';
+			hashCode = hashCode * BASE + curVal + 1;
+			cnt[curVal]++;
+			if (cnt[curVal] == 1) {
+				allKinds++;
+			}
+			if (cnt[curVal] > maxCnt) {
+				maxCnt = cnt[curVal];
+				maxCntKinds = 1;
+			} 
+            else if (cnt[curVal] == maxCnt) {
+				maxCntKinds++;
+			}
+			if (maxCntKinds == allKinds) {
+				addToSet(set,hashCode);
+			}
+        }
+    }
+    int result=set->size;
+    freeHashSet(set);
+    return result;
+}
