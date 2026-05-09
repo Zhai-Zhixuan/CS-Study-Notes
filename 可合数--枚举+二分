@@ -1,0 +1,62 @@
+//对于任意一个非负整数 𝑤，若存在两个非负整数 𝑥,𝑦（可以相同），使得 𝑤=2**x+2**𝑦，则称 𝑤 为一个「可合数」。
+//现在给定两个非负整数 𝐿,𝑅，求出区间 [𝐿,𝑅] 内有多少个不同的「可合数」。
+//二进制中恰好有两位是1或一位是1的数(>=2)
+#include<stdio.h>
+int cmp(const void* a,const void* b){
+    long long x=*(long long*)a;
+    long long y=*(long long*)b;
+    if(x<y) return -1;
+    if(x>y) return 1;
+    return 0; //直接相减有溢出风险
+}
+int main(){
+    int t;
+    scanf("%d",&t);
+    //一共有62+C(63,2)=2015种可能
+    long long nums[2015];
+    int cnt=0;
+    //列举所有可能合数
+    for(int i=1;i<63;i++){
+        nums[cnt++]=1ULL<<i;
+    }
+    for(int i=0;i<63;i++){
+        for(int j=i+1;j<63;j++){
+            nums[cnt++]=(1ULL<<i)+(1ULL<<j);
+        }
+    }
+    qsort(nums,cnt,sizeof(long long),cmp);
+    while(t--){
+        long long L,R;
+        scanf("%lld %lld",&L,&R);
+        int num=0;
+        int begin=cnt,end=-1;
+        int l=0,r=cnt-1;
+        //寻找左边界
+        while(l<=r){
+            int m=l+(r-l)/2;
+            if(nums[m]>=L){
+                r=m-1;
+                begin=m;
+            }
+            else{
+                l=m+1;
+            }
+        }
+        //寻找右边界
+        l=0,r=cnt-1;
+        while(l<=r){
+            int m=l+(r-l)/2;
+            if(nums[m]<=R){
+                l=m+1;
+                end=m;
+            }
+            else{
+                r=m-1;
+            }
+        }
+        if(begin<=end&&begin<=cnt&&end>=0){
+            printf("%d\n",end-begin+1);
+        }
+        else printf("0\n");
+    }
+}
