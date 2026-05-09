@@ -1,0 +1,58 @@
+//小红书有一个推荐系统，可以根据用户搜索的关键词推荐用户希望获取的内容。
+//现在给定小红的搜索记录（记录为分词后的结果），我们认为当一个单词出现的次数不少于3次时，该单词为“用户期望搜索的单词”，即称为关键词。
+//输出小红的用户画像对应的所有关键词。
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#define BASE 499
+#define MAXN 100005
+typedef struct hashSet{
+    char word[50];
+    int count;
+}Word;
+int cmp(const void* a,const void* b){
+    Word* w1=(Word*)a;
+    Word* w2=(Word*)b;
+    if(w1->count != w2->count){
+        return w2->count-w1->count;
+    }
+    return strcmp(w1->word,w2->word);
+}
+int main() {
+    char s[MAXN];
+    Word words[10000];
+    int wordCount=0;
+    fgets(s,MAXN,stdin);
+    s[strcspn(s,"\n")]='\0';
+    char* token=strtok(s," "); //分割字符串，返回第一个分割出来的单词
+    while(token){
+        int found=-1;
+        for(int i=0;i<wordCount;i++){
+            if(strcmp(words[i].word,token)==0){
+                found=i;
+                break;
+            }
+        }
+        if(found!=-1){
+            words[found].count++;
+        }
+        else{
+            strcpy(words[wordCount].word,token);
+            words[wordCount].count++;
+            wordCount++;
+        }
+        token=strtok(NULL," "); //获取下一个单词
+    }
+    Word result[10000];
+    int resultCount=0;
+    for(int i=0;i<wordCount;i++){
+        if(words[i].count>=3){
+            result[resultCount++]=words[i];
+        }
+    }
+    qsort(result,resultCount,sizeof(Word),cmp);
+    for(int i=0;i<resultCount;i++){
+        printf("%s\n",result[i].word);
+    }
+    return 0;
+}
