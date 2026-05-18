@@ -1,0 +1,29 @@
+#include <stdio.h>
+#include <stdlib.h>
+int cmp(const void*a,const void*b){
+    return *(long long*)b-*(long long*)a;
+}
+int main() {
+    long long n;
+    int k;
+    scanf("%lld %d",&n,&k);
+    long long a[100005];
+    for(long long i=0;i<n;i++){
+        scanf("%lld",&a[i]);
+    }
+    qsort(a,n,sizeof(long long),cmp);
+    long long score=0;
+    for(long long i=0;i<n-1;){
+        if(a[i]-a[i+1]<=k){
+            score+=(a[i]*a[i+1]); 
+            //在 C 语言中，表达式的类型由操作数的类型决定，而不是由赋值的目标类型决定。
+            //如果a[i]是int类型，a[i]*a[i-1]会溢出
+            i+=2;
+        }
+        else{
+            i++;
+        }
+    }
+    printf("%lld\n",score);
+    return 0;
+}
