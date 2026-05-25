@@ -1,0 +1,30 @@
+#include <stdio.h>
+//从中间开始向两边找：从 𝑎=⌊𝑛/2⌋ 开始，如果 gcd(𝑎,𝑛−𝑎)=1，就取这对。如果中间的不互质，就往下减 1 再试。
+//2. 实际尝试中：◦ 若 𝑛 是奇数：取 𝑎=⌊𝑛/2⌋，𝑏=⌈𝑛/2⌉，它们相差 1，必定互质。
+//若 𝑛 是偶数：先试 𝑎=𝑛/2，则 𝑏=𝑛/2，gcd = n/2 > 1（当 n>2 时），不行。
+//试𝑎=𝑛/2−1，则 𝑏=𝑛/2+1，相差 2，gcd 可能是 1 或 2。
+//若 𝑛/2 是偶数，则 𝑎,𝑏 都是奇数，gcd = 1；若 𝑛/2 是奇数，则 𝑎,𝑏 都是偶数，gcd 至少 2，还得继续找。
+long long gcd(long long a,long long b){
+    while(a){
+        long long t=b%a;
+        b=a;
+        a=t;
+    }
+    return b;
+}
+int main() {
+    int t;
+    scanf("%d",&t);
+    while(t--){
+        long long n;
+        scanf("%lld",&n);
+        long long a=n/2;
+        long long b=n-a;
+        while(gcd(a,b)!=1){
+            a--;
+            b=n-a;
+        }
+        printf("%lld %lld\n",a,b);
+    }
+    return 0;
+}
