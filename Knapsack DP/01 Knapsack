@@ -1,0 +1,46 @@
+#include <stdio.h>
+#define max(a,b) ((a)>(b)?(a):(b))
+/* method1:
+dp[i][j]:1--i物品自由选择容量不超过j的情况下的最大价值
+1)不选i dp[i-1][j]
+2)选i dp[i-1][j-cost[i]]+val[i]  
+
+method2:
+dp[i][j]:前i个物品中，恰好能装满容量j的最大价值
+*/
+int main() {
+    int n,V;
+    scanf("%d%d",&n,&V);
+    int dp[1005][1005]={0};
+    int dp1[1005][1005]; 
+    for(int i=0;i<=n;i++){
+        for(int j=0;j<=V;j++){
+            dp1[i][j]=-1000000000;
+        }
+        dp1[i][0]=0;
+    }
+    int cost[1005]={0},val[1005]={0};
+    for(int i=1;i<=n;i++){
+        scanf("%d %d",&cost[i],&val[i]);
+    }
+    for(int i=1;i<=n;i++){
+        for(int j=0;j<=V;j++){
+            dp[i][j]=dp[i-1][j];
+            dp1[i][j]=dp1[i-1][j];
+            if(j>=cost[i]){
+                dp[i][j]=max(dp[i][j],dp[i-1][j-cost[i]]+val[i]);
+            }
+            if(j>=cost[i]&&dp[i-1][j-cost[i]]!=-1000000000){
+                dp1[i][j]=max(dp1[i][j],dp1[i-1][j-cost[i]]+val[i]);
+            }
+        }
+    }
+    printf("%d\n",dp[n][V]);
+    if(dp1[n][V]<0){
+        printf("0");
+    }
+    else{
+        printf("%d",dp1[n][V]);
+    }
+    return 0;
+}
