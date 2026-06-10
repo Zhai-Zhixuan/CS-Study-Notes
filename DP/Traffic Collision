@@ -4,7 +4,7 @@
 //https://www.nowcoder.com/share/jump/1997206311781063299689
 
 //后面车的速度必须不大于前面车的速度
-//排序+最长不下降子序列的长度 /DP/LNDS
+//排序+最长不下降子序列的长度[LNDS](LNDS)
 #include <stdio.h>
 #include <stdlib.h>
 #define max(a,b) ((a)>(b))?(a):(b)
