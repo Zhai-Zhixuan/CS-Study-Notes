@@ -1,0 +1,74 @@
+//version 1 从后往前动态规划,but时间复杂度大
+#include <limits.h>
+#include <stdio.h>
+int f(long long* a,int n,int* dp){
+    int i;
+    int ans=1;
+    for(i=n-1;i>=0;i--){ //从后往前记录
+        for(int j=i+1;j<n;j++){
+            if(a[j]>=a[i]){
+                dp[i]=dp[i]<dp[j]+1?dp[j]+1:dp[i];
+            }
+        }
+        if(dp[i]>ans){
+            ans=dp[i];
+        }
+    }
+    return ans;
+}
+
+int main() {
+    int n;
+    scanf("%d",&n);
+    long long a[5005];
+    int dp[5005]; //dp[i]记录i下标开始的最长子序列长度
+    for(int i=0;i<n;i++){
+        scanf("%lld",&a[i]);
+        dp[i]=1;
+    }
+    int ans=f(a,n,dp);
+    printf("%d",ans);
+    return 0;
+}
+
+
+//version 2 贪心＋二分查找 O(n log n)
+#include <limits.h>
+#include <stdio.h>
+//二分查找：在数组[0...len-1]中找第一个>x的位置
+int f(int* d,int len,int target){
+    int l=0,r=len; //r指向数组末尾的下一个位置
+    while(l<r){
+        int mid=l+(r-l)/2;
+        if(d[mid]>target){
+            r=mid;
+        }
+        else{
+            l=mid+1;
+        }
+    }
+    return l;
+}
+
+int main() {
+    int n;
+    scanf("%d",&n);
+    int a[n];
+    int d[n]; //dp[k]表示长度为k+1的所有不下降子序列中，结尾元素的最小值
+    for(int i=0;i<n;i++){
+        scanf("%d",&a[i]);
+    }
+    d[0]=a[0];
+    int len=1;
+    for(int i=1;i<n;i++){ 
+        if(a[i]>=d[len-1]){
+            d[len++]=a[i];
+        }
+        else{
+            int pos=f(d,len,a[i]); //在d数组中查找第一个严格大于x的元素
+            d[pos]=a[i];
+        }
+    }
+    printf("%d",len);
+    return 0;
+}
