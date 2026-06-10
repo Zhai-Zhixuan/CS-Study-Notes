@@ -1,0 +1,53 @@
+//一条单向单车道的道路上有 𝑛 辆车，第 𝑖 辆车位于 𝑥𝑖 ，速度大小为 𝑣𝑖 。
+//显然，如果车辆保持此速度行驶下去，在大多数情况下都会发生碰撞。
+//现在牛牛想知道，至少需要移除几辆车，才能让这些车不发生碰撞？
+//https://www.nowcoder.com/share/jump/1997206311781063299689
+
+//后面车的速度必须不大于前面车的速度
+//排序+最长不下降子序列的长度 /DP/LNDS
+#include <stdio.h>
+#include <stdlib.h>
+#define max(a,b) ((a)>(b))?(a):(b)
+typedef struct car{
+    int x;
+    int v;
+}car;
+car cars[100005];
+int cmp(const void*a,const void* b){
+    return ((car*)a)->x-((car*)b)->x;
+}
+int f(int *d, int len,int target){
+    int l=0,r=len;
+    while(l<r){
+        int mid=l+(r-l)/2;
+        if(d[mid]>target){
+            r=mid;
+        }
+        else{
+            l=mid+1;
+        }
+    }
+    return l;
+}
+int main() {
+    int n;
+    scanf("%d",&n);
+    int d[n];
+    for(int i=0;i<n;i++){
+        scanf("%d %d",&cars[i].x,&cars[i].v);
+    }
+    d[0]=cars[0].v;
+    int len=1;
+    qsort(cars,n,sizeof(car),cmp);
+    for(int i=1;i<n;i++){
+        if(cars[i].v>=d[len-1]){
+            d[len++]=cars[i].v;
+        }
+        else{
+            int pos=f(d,len,cars[i].v);
+            d[pos]=cars[i].v;
+        }
+    }
+    printf("%d",n-len);
+    return 0;
+}
