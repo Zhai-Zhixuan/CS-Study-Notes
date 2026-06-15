@@ -1,0 +1,19 @@
+#include <stdio.h>
+对于每组 𝑥,𝑦：
+1. 计算 z = x ^ y
+2. 数一下 z 的二进制表示末尾有多少个连续的 0 比如 z = 8（二进制 1000），末尾有 3 个 0，z = 28（二进制 11100），末尾有 2 个 0
+3. 答案 = 2**末尾0的个数
+int main() {
+    int t;
+    scanf("%d",&t);
+    while(t--){
+        long long x,y;
+        scanf("%lld %lld",&x,&y);
+        long long z=x^y;
+        long long z1=-(x^y); //-z 在二进制补码中等于 ~z + 1
+        long long max=z&z1; //z & (-z) 的结果就是第 i 位为 1，其他位都为 0，即 2^i, 提取最低位1对应的值
+        printf("%lld\n",max);
+    }
+    return 0;
+}
+
