@@ -1,0 +1,24 @@
+Sieve of Eratosthenes 埃拉托斯特尼筛法
+原理：
+一个质数的倍数一定是合数
+核心思想：
+1. 列出从 2 到 N 的所有整数
+2. 从最小的质数 2 开始，将其所有倍数标记为合数
+3. 找到下一个未被标记的数，它一定是质数，重复标记它的倍数
+4. 重复直到处理完所有数
+优化：
+1.合数n的质因子必定小于等于根号n，所以只判断[2,n**0.5]内有没有质因子即可
+2.若j每次都从2*i开始遍历，而j已被更小的2等质因子整除标记，发生重复标记，只需从i*i开始遍历即可
+代码：
+const int N=1000000;
+void E_sieve() {
+    vector<bool>is_prime(N,true);
+    is_prime[0]=is_prime[1]=false;
+    for(int i=2;i*i<=N;i++){
+        if(is_prime[i]){
+            for(int j=i*i;j<=N;j+=i){
+                is_prime[j]=false;
+            }
+        }
+    }
+}
