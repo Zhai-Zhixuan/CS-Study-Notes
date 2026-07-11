@@ -1,0 +1,17 @@
+#include <iostream>
+#define MOD 1000000000
+using namespace std;
+int main() {
+    long long n;
+    cin >> n;
+    long long ans = 1;
+    for(int i=1;i<=n;i++){
+        ans *= (i%MOD);
+        while(ans%10==0){
+            ans/=10;
+        }
+        ans %= MOD;
+    }
+    cout << ans%10 << endl;
+}
+//计算2的因子数量 n/2 + n/4 + n/8 + n/16 + ...
