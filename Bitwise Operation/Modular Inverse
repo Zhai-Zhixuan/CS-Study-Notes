@@ -1,0 +1,26 @@
+#include <iostream>
+#define P 1000000007
+using namespace std;
+long long f(long long a,long long b){ 
+    long long ans = 1;
+    a %= P;
+    while(b>0){
+        if(b&1){
+            ans = (ans*a)%P;
+        }
+        a = (a*a)%P;
+        b>>=1;
+    }
+    return ans%P;
+}
+int main() {
+    int t;
+    cin >> t;
+    while(t--){
+        long long a,b;
+        cin >> a >> b;
+        long long ins = f(b,P-2); //快速幂
+        long long ans = ((a % P + P)%P)*(ins %P); //负数a取模，用(a % p + p) % p 将其映射到正数域。
+        cout << ans%P <<endl;
+    }
+}
