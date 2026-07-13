@@ -1,0 +1,38 @@
+#include <iostream>
+#include <vector>
+#define LIMIT 100000
+#define MOD 1000000007
+using namespace std;
+vector <long long>cnt(LIMIT+1); //cnt[i]：数字 i 在数组中出现的次数
+vector <long long>dp(LIMIT+1); //dp[i]:最大公约数恰好为 i 的子序列数量
+vector <long long>pow2(LIMIT+1);
+void build(){    
+  pow2[0]=1;    
+  for(int i=1;i<=LIMIT;i++){        
+    pow2[i] = (pow2[i-1]*2)%MOD;    
+  }
+}
+int solve(){    
+  for(int i=LIMIT;i>=1;i--){        
+    long long counts = 0;        
+    for(int j = i;j<=LIMIT;j+=i){            
+      counts += cnt[j]; //倒序统计 i 的倍数出现的总次数 counts
+    }        
+    dp[i] = (pow2[counts] - 1 + MOD) % MOD;  //从这些倍数中选至少一个数：2^counts - 1 种方案（这些方案的gcd一定是 i 的倍数）
+    for(int j = 2 * i;j <= LIMIT;j += i){            
+      dp[i] = (dp[i] - dp[j] + MOD) % MOD;   //减去gcd是 2i, 3i, 4i, ... 的情况（容斥）     
+    }    
+  }    
+  return dp[1];
+}
+int main(){    
+  int n;    
+  cin >> n;    
+  build();    
+  for(int i=1;i<=n;i++){        
+    int num;        
+    cin >> num;        
+    cnt[num]++;    
+  }    
+  cout << solve() << endl;
+}
