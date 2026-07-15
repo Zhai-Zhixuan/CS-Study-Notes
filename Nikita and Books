@@ -1,0 +1,42 @@
+//For the final array to be strictly increasing, the minimum possible number of books in the 𝑖-th tower is 𝑖 
+//(since every 𝑎𝑖≥1 and all values must be distinct integers). 
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void solve(){
+    int n;
+    cin >> n;
+    vector<long long> a(n);
+    for(int i = 0; i < n; i++){
+        cin >> a[i];
+    }
+    long long to_i = 0;
+    int ans = 1;
+    for(long long i = 1; i <= n; i++){ //i 用long long 避免溢出!
+        to_i += a[i-1];
+        long long target = (1 + i) * i / 2; //等式右边的计算类型，由右边操作数的类型决定，跟左边变量无关。
+        //等号右边如果是 int 和 int 在计算 → 结果就是 int ; 算完得到 int 结果之后，才把这个结果赋值给左边的 long long
+        if(to_i < target){
+            ans = 0;
+            break;
+        }
+    } 
+    if(ans){
+        cout << "YES" << "\n";
+    }
+    else{
+        cout << "NO" << "\n";
+    }
+}
+
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    int t;
+    cin >> t;
+    while(t--){
+        solve();
+    }
+    return 0;
+}
