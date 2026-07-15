@@ -1,0 +1,48 @@
+//求C(n,m)
+#include <iostream>
+#include <vector>
+#define LIMIT 500000
+#define MOD 1000000007
+using namespace std;
+vector<long long>fac(LIMIT+1);
+vector<long long>inv(LIMIT+1);
+int power(long long a, long long b){
+    long long ans = 1;
+    for(;b>0;b>>=1){
+        if(b&1){
+            ans = (ans * a)%MOD;
+        }
+        a = (a * a) % MOD;
+    }
+    return ans % MOD;
+}
+
+void build(){
+    fac[0] = 1;
+    for(int i = 1; i <= LIMIT; i ++){
+        fac[i] = (long long)fac[i-1] * i % MOD;
+    }
+    inv[LIMIT] = power(fac[LIMIT],MOD-2) ;
+    for(int i = LIMIT; i>=1; i--){
+        inv[i-1] = (long long)inv[i] * i % MOD;
+    }
+}
+
+long long c(int n,int m){
+    if(m<0 || n < m) return 0;
+    long long ans = fac[n] % MOD;
+    ans = ans * inv[m] % MOD;
+    ans = ans * inv[n-m] % MOD;
+    return ans;
+}
+int main() {
+    int t;
+    cin >> t;
+    build();
+    while(t--){
+        int n,m;
+        cin >> n >> m;
+        long long ans = c(n,m) % MOD;
+        printf("%lld\n",ans);
+    }
+}
