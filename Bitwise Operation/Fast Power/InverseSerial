@@ -1,0 +1,65 @@
+#include <iostream>
+#include <vector>
+#define MOD 1000000007
+#define LIMIT 1000
+using namespace std;
+vector<long long>fac(LIMIT + 1);
+vector<long long>inv(LIMIT + 1);
+long long power(long long a, long long b) {
+    long long ans = 1;
+    for (; b > 0; b >>= 1) {
+        if (b & 1) {
+            ans = (ans * a) % MOD;
+        }
+        a = (a * a) % MOD;
+    }
+    return ans % MOD;
+}
+void build() { //构建阶乘表
+    fac[0] = 1;
+    fac[1] = 1;
+    for (int i = 2; i <= LIMIT; i++) {
+        fac[i] = (long long)i * fac[i - 1] % MOD;
+    }
+    inv[LIMIT] = power(fac[LIMIT], MOD - 2);
+    for (int i = LIMIT - 1; i >= 0; i--) { //线性递归优化 单个阶乘的逆元
+        inv[i] = (long long)(i + 1) * inv[i + 1] % MOD;
+    }
+}
+
+long long c1(int n, int m) {
+    long long a = 1, b = 1, c = 1;
+    for (long long i = 1; i <= n; i++) {
+        a = (a * i) % MOD;
+    }
+    for (long long i = 1; i <= m; i++) {
+        b = (b * i) % MOD;
+    }
+    for (long long i = 1; i <= n - m; i++) {
+        c = (c * i) % MOD;
+    }
+    return (a * power(b * c % MOD, MOD - 2)) % MOD;
+}
+
+long long c2(int n, int m) {  //阶乘结果逆元表的线性递推 ans = a! * inv[m] * inv[n-m];
+    long long ans = fac[n];
+    ans = (ans * inv[m]) % MOD;
+    ans = (ans * inv[n - m]) % MOD;
+    return ans;
+}
+int main() {
+    int n = 500;
+    cout << "测试开始" << endl;
+    build();
+    for (int i = 1; i <= n; i++) {
+        if (c1(n, i) != c2(n, i)) {
+            cout << "ERROR!" << endl;
+        }
+    }
+    cout << "测试结束" << endl;
+    int a = 597;
+    int b = 367;
+    cout << "方法1答案:" << c1(a, b) << endl;
+    cout << "方法2答案:" << c2(a, b) << endl;
+    return 0;
+}
