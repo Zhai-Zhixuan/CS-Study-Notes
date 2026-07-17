@@ -1,0 +1,27 @@
+//给你一个整数 n ，请你找出并返回第 n 个 丑数 。
+//丑数:质因子只包含 2、3 和 5 的正整数。=>后面丑数一定是前面丑数*2/*3/*5得到
+//https://leetcode.cn/problems/ugly-number-ii
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        vector<int>s(1000000);
+        s[1] = 1;
+        for(int i=2,i1=1,i2=1,i3=1;i<=n;i++){
+            int a = s[i1] * 2;
+            int b = s[i2] * 3;
+            int c = s[i3] * 5;
+            s[i] = min(a,min(b,c));
+            if(s[i]==a){
+                i1 ++ ;
+            }
+            if(s[i]==b){
+                i2 ++ ;
+            }
+            if(s[i]==c){
+                i3 ++ ;
+            }
+        }
+        
+        return s[n];
+    }
+};
