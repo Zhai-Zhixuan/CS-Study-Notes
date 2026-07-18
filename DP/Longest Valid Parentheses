@@ -1,0 +1,24 @@
+//给你一个只包含 '(' 和 ')' 的字符串，找出最长有效（格式正确且连续）括号 子串 的长度。
+//左右括号匹配，即每个左括号都有对应的右括号将其闭合的字符串是格式正确的，比如 "(()())"。
+class Solution {
+public:
+    int solve(int l,string s){
+        vector<int>dp(l); //dp[i]:子串必须以i位置的字符结尾的情况下，往左最多推多远能整体有效
+        int max_l=0;
+        for(int i=1;i<l;i++){
+            if(s[i]==')'){
+                int p=i-dp[i-1]-1;
+                if(p>=0&&s[p]=='('){
+                    dp[i]=dp[i-1]+2+(p-1>=0?dp[p-1]:0);
+                }
+            }
+            max_l=max(max_l,dp[i]);
+        }
+        return max_l;
+    }
+    int longestValidParentheses(string s) {
+        int l=s.length();
+        if(l==0) return 0;
+        return solve(l,s);
+    }
+};
