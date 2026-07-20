@@ -1,3 +1,4 @@
+https://leetcode.cn/problems/minimum-size-subarray-sum
 int minSubArrayLen(int target, int* nums, int numsSize) {
     int sum=0;
     int min=numsSize+1;
