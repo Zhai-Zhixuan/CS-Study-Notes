@@ -1,0 +1,27 @@
+// https://leetcode.cn/problems/unique-substrings-in-wraparound-string
+class Solution {
+public:
+    int findSubstringInWraproundString(string s) {
+        int n = s.length();
+        vector<int> ch(n);
+        vector<int> dp(26, 0); // dp[i]以字符i为结尾的最长子序列长度
+        for (int i = 0; i < n; i++) {
+            ch[i] = s[i] - 'a'; // 将字符转换成数字i
+        }
+        dp[ch[0]] = 1;
+        for (int i = 1, before, now, length = 1; i < n; i++) {
+            before = ch[i - 1], now = ch[i];
+            if ((before == 25 && now == 0) || now == before + 1) {
+                length++;
+            } else {
+                length = 1;
+            }
+            dp[now] = max(dp[now], length);
+        }
+        int total = 0;
+        for (int i = 0; i < 26; i++) {
+            total += dp[i];
+        }
+        return total;
+    }
+};
