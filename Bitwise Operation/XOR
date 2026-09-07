@@ -19,3 +19,17 @@ os:a和b要有不同的内存空间!交换arr[0]和arr[0]会出错
   a=a^b
   b=a^b //b=(a^b)^b
   a=a^b
+2)不用任何判断语句和比较操作，返回两个数的最大值
+https://www.nowcoder.com/share/jump/1997206311788764763589
+3)找到缺失的数字
+https://leetcode.cn/problems/missing-number
+4)数组中1种数出现了奇数次，其他的数都出现了偶数次，返回出现了奇数次的数
+https://leetcode.cn/problems/single-number
+
+Brian Kernighan算法--提取出二进制状态中最右侧的1
+n&((~n)+1)==n&(-n)
+
+5)数组中有2种数出现了奇数次，其他的数都出现了偶数次，返回这2种出现了奇数次的数
+https://leetcode.cn/problems/single-number-iii
+6)数组中只有1种数出现次数少于m次，其他数都出现了m次，返回出现次数小于m次的那种数
+https://leetcode.cn/problems/single-number-ii
