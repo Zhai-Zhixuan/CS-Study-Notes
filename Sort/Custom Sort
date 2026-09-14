@@ -1,4 +1,5 @@
 -按规则A排序；A相同按B；B相同按C：
+//https://ac.nowcoder.com/acm/contest/140235/C
 sort(a.begin(), a.end(), [](auto x, auto y) {
     if (A(x) != A(y))
         return A(x) < A(y);
