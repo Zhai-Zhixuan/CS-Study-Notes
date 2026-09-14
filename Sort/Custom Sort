@@ -1,0 +1,21 @@
+-按规则A排序；A相同按B；B相同按C：
+sort(a.begin(), a.end(), [](auto x, auto y) {
+    if (A(x) != A(y))
+        return A(x) < A(y);
+
+    if (B(x) != B(y))
+        return B(x) < B(y);
+
+    return C(x) < C(y);
+});
+
+| 函数                     | 作用                   |
+| ----------------------- | ---------------------- |
+| __builtin_popcount(x)   | int 中 1 的数量         |
+| __builtin_popcountll(x) | long long 中 1 的数量   |
+| __builtin_ctz(x)        | int 末尾 0 的数量       |
+| __builtin_ctzll(x)      | long long 末尾 0 的数量 |
+| __builtin_clz(x)        | int 开头 0 的数量       |
+| __builtin_clzll(x)      | long long 开头 0 的数量 |
+
+x&-x == __builtin_clzll(x) => 取最低位1所在的位置
