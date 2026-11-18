@@ -47,3 +47,42 @@ int main(){
     }
     cout <<  compute(n);
 }
+
+/** 取最大收益 → 执行一次操作 → 重新计算收益 → 放回堆
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<queue>
+#include<array>
+using namespace std;
+struct cmp{
+    bool operator()(const array<long long,4>&a,const array<long long,4>&b)const{
+        return a[3]<b[3];
+    }
+};
+long long cost(long long k,long long b,long long people){
+    return people*max(k*people+b,0LL);
+}
+int main(){
+    int n,m;
+    cin >> n >> m;
+    priority_queue<array<long long,4>,vector<array<long long,4>>,cmp>heap;
+    for(int i=0;i<m;i++){
+        int k,b;
+        cin >> k >> b;
+        int t=cost(k,b,1)-cost(k,b,0);
+        if(t>0) heap.push({k,b,0,t});
+    }
+    long long ans=0;
+    while(n--&&!heap.empty()){
+        auto cur=heap.top();
+        heap.pop();
+        long long k=cur[0];
+        long long b=cur[1];
+        long long people=cur[2]+1;
+        long long earn=cost(k,b,people+1)-cost(k,b,people);
+        ans+=cur[3];
+        if(earn>0)heap.push({k,b,people,earn});
+    }
+    cout << ans << endl;
+}**/
